@@ -1,0 +1,2 @@
+ALTER TABLE `mma`.`product` 
+CHANGE COLUMN `Code` `Code` VARCHAR(10) NOT NULL ;
