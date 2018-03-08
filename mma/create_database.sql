@@ -5,11 +5,33 @@ USE mma;
 
 -- create the Product table
 CREATE TABLE Product (
-  ProductID      INT            PRIMARY KEY  AUTO_INCREMENT,
-  Code           VARCHAR(10)    NOT NULL     UNIQUE,
-  Description    VARCHAR(255)   NOT NULL,
-  ListPrice      DECIMAL(10,2)  NOT NULL
+  ID             INT             PRIMARY KEY     AUTO_INCREMENT,
+  Code           VARCHAR(10)     NOT NULL        UNIQUE,
+  Description    VARCHAR(255)    NOT NULL,
+  ListPrice      DECIMAL(10,2)   NOT NULL
 );
+
+-- create the Invoice table
+CREATE TABLE Invoice (
+  ID               INT           PRIMARY KEY     AUTO_INCREMENT,
+  OrderNumber      VARCHAR(25)   NOT NULL        UNIQUE,
+  CustomerName     VARCHAR(50)   NOT NULL,
+  OrderDate        DATE          NOT NULL,
+  Total            DECIMAL(10,2) NOT NULL
+  );
+  
+-- create LineItem table
+CREATE TABLE LineItem (
+  ID               INT           PRIMARY KEY     AUTO_INCREMENT,
+  InvoiceID        INT           NOT NULL,
+  ProductID        INT           NOT NULL,
+  Quantity         INT           NOT NULL,
+  
+  FOREIGN KEY (InvoiceID) REFERENCES Invoice (ID),
+  FOREIGN KEY (ProductID) REFERENCES Product (ID)
+  );
+  
+  
 
 -- insert some rows into the Product table
 INSERT INTO Product (Code, Description, ListPrice) VALUES
@@ -22,6 +44,14 @@ INSERT INTO Product (Code, Description, ListPrice) VALUES
 ('javascript', 'Murach''s JavaScript and jQuery', 54.50),
 ('jquery', 'Murach''s jQuery', '54.50'),
 ('cics', 'Murach''s CICS for the COBOL programmer', 54.00);
+
+-- insert some test data for invoice and line item, based on products above
+INSERT INTO Invoice VALUES
+(1, 'JB0001', 'Jake Bostic', '2018-03-08', 0);
+
+INSERT INTO LineItem VALUES
+(1, 1, 7, 5),
+(2, 1, 5, 10);
 
 -- create a user and grant privileges to that user
 GRANT SELECT, INSERT, DELETE, UPDATE
